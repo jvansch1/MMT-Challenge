@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/master.css">
+    <title></title>
+  </head>
+  <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+
+        $.ajax({
+          type: 'GET',
+          url: 'https://api.myjson.com/bins/1gjv1x',
+          success: (returnData) => {
+            let data;
+            let height = 800;
+            let width = 800;
+            data = returnData
+
+
+            firstTime = data.bboList[0].timeStr.split('')
+            console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
+            let hours = parseInt(firstTime.slice(0, 2).join(''))
+            let minutes = firstTime.slice(3, 5).join('')
+            let seconds = firstTime.slice(6, 8).join('')
+            let milliseconds = firstTime.slice(9).join('')
+            console.log(hours)
+            console.log(minutes)
+            console.log(seconds)
+            console.log(milliseconds)
+            // console.log(firstTime)
+            // let newDate = Date.parse(firstTime)
+            // console.log(newDate)
+            // let time = newDate.parse(firstTime)
+            // console.log(time)
+
+            maxYRange = d3.max(data.bboList, function(d, i) {
+              return d.bid
+            })
+
+            minYRange = d3.min(data.bboList, function(d, i) {
+              return d.bid
+            })
+
+            console.log(data)
+
+            let x = d3.scaleLinear()
+              .domain([0, data.bboList.length])
+              .range([0, width])
+
+            let y = d3.scaleLinear()
+              .domain([minYRange, 240000])
+              .range([0, height])
+
+            let svg = d3.select("body")
+              .append("svg")
+              .classed("chart", true)
+
+            svg.selectAll(".points")
+              .data(data.bboList)
+            .enter()
+              .append("rect")
+                .classed('points', true)
+                .attr("x",function(d,i){
+                  return x(i)
+                })
+                .attr("y", 0)
+                .style("width", 1)
+                .style("height", function(d,i){
+                  return y(d.ask)
+                })
+
+            svg.selectAll(".ask-points")
+              .data(data.bboList)
+            .enter()
+              .append("rect")
+                .classed('ask-points', true)
+                .attr("x",function(d,i){
+                  return x(i)
+                })
+                .attr("y", 0)
+                .style("width", 1)
+                .style("height", function(d,i){
+                  return y(d.bid)
+                })
+
+
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+.chart {
+  background-color: #FAEBD7;
+  width: 800px;
+  height: 800px;
+  border: 1px solid black;
+}
+
+.points {
+  fill: green;
+}
+
+.ask-points {
+  fill: black;
+}
