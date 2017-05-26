@@ -31,11 +31,16 @@
             console.log(minutes)
             console.log(seconds)
             console.log(milliseconds)
-            // console.log(firstTime)
-            // let newDate = Date.parse(firstTime)
-            // console.log(newDate)
-            // let time = newDate.parse(firstTime)
-            // console.log(time)
+
+            let margins = {
+              bottom: 40,
+              top: 5,
+              left: 80,
+              right: 5
+            }
+
+            width = width - margins.left - margins.right
+            height = height - margins.top - margins.bottom
 
             maxYRange = d3.max(data.bboList, function(d, i) {
               return d.bid
@@ -59,7 +64,27 @@
               .append("svg")
               .classed("chart", true)
 
-            svg.selectAll(".points")
+            let chart = svg.append("g")
+              .classed("display", true)
+              .attr("transform", `translate(${margins.left},${margins.top})`)
+
+
+
+            let xAxis = d3.axisBottom(x)
+            let yAxis = d3.axisLeft(y)
+
+            chart.append("g")
+              .classed("x axis", true)
+              .attr("transform", `translate(0,${width})`)
+              .call(xAxis)
+
+            chart.append("g")
+              .classed("y axis", true)
+              .attr("transform", `translate(0,${height})`)
+              .call(yAxis)
+
+
+            chart.selectAll(".points")
               .data(data.bboList)
             .enter()
               .append("rect")
@@ -73,7 +98,7 @@
                   return y(d.ask)
                 })
 
-            svg.selectAll(".ask-points")
+            chart.selectAll(".ask-points")
               .data(data.bboList)
             .enter()
               .append("rect")
