@@ -188,6 +188,9 @@
             .attr("cy", function(d,i){
               return y(d.price)
             })
+            .attr("data", function(d,i) {
+              return d.shares
+            })
             .on("mouseover", function(d) {
               console.log(d)
               $("#time").html("Time: " + d.time)
