@@ -19,9 +19,14 @@
             let height = 800;
             let width = 800;
             data = returnData
+            console.log(data)
             asks = data.bboList.map(obj => {
               return obj.ask
             })
+            bids = data.bboList.map(obj => {
+              return obj.bid
+            })
+            console.log(bids)
             // firstTime = data.bboList[0].timeStr.split('')
             // console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
             // let hours = parseInt(firstTime.slice(0, 2).join(''))
@@ -69,25 +74,45 @@
 
             let area = d3.area()
               .x(function(d,i) { return x(i)})
+              .y0(0)
+              .y1(function(d,i) {return y(d)})
+
+            let askArea = d3.area()
+              .x(function(d,i) { return x(i)})
               .y0(height)
               .y1(function(d,i) {return y(d)})
 
-            let line = d3.line()
+            let bidLine = d3.line()
+              .x(function(d,i) { return x(i)})
+              .y(function(d,i) {return d});
+
+            let askLine = d3.line()
               .x(function(d,i) { return x(i)})
               .y(function(d,i) {return d});
 
             // Add Area to chart
             chart.append("path")
-              .data(asks)
+              // .data(asks)
               .classed("area", true)
-              .attr("d", area(asks))
+              .attr("d", area(bids))
+
+            chart.append("path")
+              // .data(asks)
+              .classed("area2", true)
+              .attr("d", askArea(asks))
 
             // Add line to chart
             chart.append("path")
               .classed("line", true)
               .attr("stroke", "blue")
               .attr("stroke-width", 0.5)
-              .attr("d", line(asks))
+              .attr("d", bidLine(bids))
+            // Add Ask Line to chart
+            chart.append("path")
+              .classed("line", true)
+              .attr("stroke", "brown")
+              .attr("stroke-width", 0.5)
+              .attr("d", askLine(asks))
 
 
             // Create axis
