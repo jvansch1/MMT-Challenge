@@ -1,5 +1,5 @@
 .chart {
-  background-color: orange;
+  background-color: #F5F5DC;
   width: 800px;
   height: 800px;
   border: 1px solid black;
@@ -14,9 +14,9 @@
 }
 
 .area {
-  fill: lightblue;
+  fill: orange;
 }
 
-.ares2 {
-  fill: brown;
+.area2 {
+  fill: green;
 }
