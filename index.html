@@ -19,21 +19,22 @@
             let height = 800;
             let width = 800;
             data = returnData
-
-
-            firstTime = data.bboList[0].timeStr.split('')
-            console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
-            let hours = parseInt(firstTime.slice(0, 2).join(''))
-            let minutes = firstTime.slice(3, 5).join('')
-            let seconds = firstTime.slice(6, 8).join('')
-            let milliseconds = firstTime.slice(9).join('')
-            console.log(hours)
-            console.log(minutes)
-            console.log(seconds)
-            console.log(milliseconds)
+            asks = data.bboList.map(obj => {
+              return obj.ask
+            })
+            // firstTime = data.bboList[0].timeStr.split('')
+            // console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
+            // let hours = parseInt(firstTime.slice(0, 2).join(''))
+            // let minutes = firstTime.slice(3, 5).join('')
+            // let seconds = firstTime.slice(6, 8).join('')
+            // let milliseconds = firstTime.slice(9).join('')
+            // console.log(hours)
+            // console.log(minutes)
+            // console.log(seconds)
+            // console.log(milliseconds)
 
             let margins = {
-              bottom: 40,
+              bottom: 20,
               top: 5,
               left: 80,
               right: 5
@@ -45,20 +46,18 @@
             maxYRange = d3.max(data.bboList, function(d, i) {
               return d.bid
             })
-
             minYRange = d3.min(data.bboList, function(d, i) {
               return d.bid
             })
 
-            console.log(data)
-
             let x = d3.scaleLinear()
               .domain([0, data.bboList.length])
-              .range([0, width])
+              .rangeRound([0, width])
 
             let y = d3.scaleLinear()
               .domain([minYRange, 240000])
-              .range([0, height])
+              .rangeRound([0, height])
+
 
             let svg = d3.select("body")
               .append("svg")
@@ -68,51 +67,75 @@
               .classed("display", true)
               .attr("transform", `translate(${margins.left},${margins.top})`)
 
+            let area = d3.area()
+              .x(function(d,i) { return x(i)})
+              .y0(height)
+              .y(function(d,i) {return y(d)})
+
+            let line = d3.line()
+              .x(function(d,i) { return x(i)})
+              .y(function(d,i) {return y(d)});
+
+            // svg.append("path")
+            //   .data(data)
+            //   .classed("area", true)
+            //   .attr("d", area)
+            //
+            chart.append("path")
+              .data(asks)
+              .classed("line", true)
+              .attr("stroke", "blue")
+              .attr("stroke-width", 1.5)
+              .attr("d", line(asks))
 
 
+            // Create axis
             let xAxis = d3.axisBottom(x)
             let yAxis = d3.axisLeft(y)
 
+            // Add X axis
             chart.append("g")
               .classed("x axis", true)
-              .attr("transform", `translate(0,${width})`)
+              .attr("transform", `translate(0,${height})`)
               .call(xAxis)
 
+            //Add Y Axis
             chart.append("g")
               .classed("y axis", true)
               .attr("transform", `translate(0,0)`)
               .call(yAxis)
 
+            // Add ask amounts
 
-            chart.selectAll(".points")
-              .data(data.bboList)
-            .enter()
-              .append("rect")
-                .classed('points', true)
-                .attr("x",function(d,i){
-                  return x(i)
-                })
-                .attr("y", 0)
-                .style("width", 1)
-                .style("height", function(d,i){
-                  return y(d.ask)
-                })
+            // chart.selectAll(".points")
+            //   .data(data.bboList)
+            // .enter()
+            //   .append("rect")
+            //     .classed('points', true)
+            //     .attr("x",function(d,i){
+            //       return x(i)
+            //     })
+            //     .attr("y", 0)
+            //     .style("width", 1)
+            //     .style("height", function(d,i){
+            //       return y(d.ask)
+            //     })
 
-            chart.selectAll(".ask-points")
-              .data(data.bboList)
-            .enter()
-              .append("rect")
-                .classed('ask-points', true)
-                .attr("x",function(d,i){
-                  return x(i)
-                })
-                .attr("y", 0)
-                .style("width", 1)
-                .style("height", function(d,i){
-                  return y(d.bid)
-                })
+            // Add bid amounts
 
-
+            // chart.selectAll(".ask-points")
+            //   .data(data.bboList)
+            // .enter()
+            //   .append("rect")
+            //     .classed('ask-points', true)
+            //     .attr("x",function(d,i){
+            //       return x(i)
+            //     })
+            //     .attr("y", 0)
+            //     .style("width", 1)
+            //     .style("height", function(d,i){
+            //       return y(d.bid)
+            //     })
           }
         })
       })
