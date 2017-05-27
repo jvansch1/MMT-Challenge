@@ -43,6 +43,10 @@
               return total
             })
 
+            let tickTimes = [9,10,11,12,1,2,3,4,5,6]
+
+
+
             console.log(times)
 
             let margins = {
@@ -77,6 +81,20 @@
             let chart = svg.append("g")
               .classed("display", true)
               .attr("transform", `translate(${margins.left},${margins.top})`)
+              .on("mousemove", function(d) {
+                let coordinates = [0,0]
+                coordinates = d3.mouse(this)
+                let rounded = Math.floor(x.invert(d3.event.pageX)).toString().split('').slice(0,8)
+                rounded = rounded.join('') + "000000";
+                let index = null;
+                times.forEach((val,idx) => {
+                  if (val > rounded && index === null) {
+                    index = idx
+                  }
+                })
+                $("#bids").html(bids[index])
+                $("#asks").html(asks[index])
+              })
 
             let asksArea = d3.area()
               .x(function(d,i) { return x(times[i])})
@@ -133,5 +151,7 @@
         })
       })
     </script>
+    <p id='bids'></p>
+    <p id='asks'></p>
   </body>
 </html>
