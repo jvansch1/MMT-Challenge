@@ -63,7 +63,6 @@
               .domain([minYRange, 240000])
               .rangeRound([0, height])
 
-
             let svg = d3.select("body")
               .append("svg")
               .classed("chart", true)
@@ -76,6 +75,8 @@
               .x(function(d,i) { return x(i)})
               .y0(0)
               .y1(function(d,i) {return y(d)})
+
+            area.curve()
 
             let askArea = d3.area()
               .x(function(d,i) { return x(i)})

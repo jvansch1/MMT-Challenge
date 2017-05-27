@@ -15,8 +15,10 @@
 
 .area {
   fill: orange;
+  shape-rendering: crispEdges;
 }
 
 .area2 {
   fill: green;
+  shape-rendering: crispEdges;
 }
