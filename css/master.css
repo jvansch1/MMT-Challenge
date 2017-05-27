@@ -39,4 +39,25 @@
   max-width: 800px;
   max-height: 1200px;
   margin: 0 auto;
+  display: flex;
+}
+
+#ask-bid {
+  color: green;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+}
+
+#count {
+  display: flex;
+  text-align: center;
+  width: 400px;
+  margin: 0 auto;
+}
+
+#count p {
+  margin: 0 auto;
 }

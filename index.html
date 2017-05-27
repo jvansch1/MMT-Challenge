@@ -5,23 +5,32 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="lib/jQueryEvents.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/master.css">
     <title></title>
   </head>
   <body>
-    <p id='bids'></p>
-    <p id='asks'></p>
-
-    <div id='trade-info'>
-      <p id='time'>Time: </p>
-      <p id='price'>Price: </p>
-      <p id='shares'>Shares: </p>
-      <p id='trade-type'>Trade Type: </p>
-      <p id='reference'>Reference #: </p>
-    </div>
-    <button id='toggle-trades'>Toggle Trades</button>
-    <button id='toggle-e'>Toggle E</button>
-    <button id='toggle-p'>Toggle P</button>
+      <div id='ask-bid'>
+        <div id='count'>
+          <p id='bids'>Bids: </p>
+          <p id='asks'>Asks: </p>
+        </div>
+        <div id='chart-container'>
+        </div>
+      </div>
+      <div id='trade-info'>
+        <p id='time'>Time: </p>
+        <p id='price'>Price: </p>
+        <p id='shares'>Shares: </p>
+        <p id='trade-type'>Trade Type: </p>
+        <p id='reference'>Reference #: </p>
+      </div>
+      <div>
+        <input id='scale-slider' type='range' value='1' min='1' max='2' step='.01'></input>
+        <button id='toggle-trades'>Toggle Trades</button>
+        <button id='toggle-e'>Toggle E</button>
+        <button id='toggle-p'>Toggle P</button>
+      </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // Activate events from jQuery file
@@ -35,6 +44,7 @@
             let height = 800;
             let width = 1200;
             data = returnData
+            let tradeScale = 1;
 
             asks = data.bboList.map(obj => {
               return obj.ask
@@ -59,13 +69,15 @@
               return total
             })
 
+            console.log(times)
+
             let tickTimes = [9,10,11,12,1,2,3,4,5,6]
 
             let margins = {
               bottom: 20,
-              top: 5,
+              top: 20,
               left: 80,
-              right: 5
+              right: 20
             }
 
             width = width - margins.left - margins.right
@@ -86,7 +98,7 @@
               .domain([minYRange, 240000])
               .rangeRound([height, 0])
 
-            let svg = d3.select("body")
+            let svg = d3.select("#chart-container")
               .append("svg")
               .classed("chart", true)
 
@@ -102,6 +114,13 @@
               .y0(height)
               .y1(function(d,i) {return y(d)})
 
+            // function zoomed() {
+            //   chart.attr("transform", d3.event.transform)
+            // }
+            //
+            // let zoom = d3.zoom()
+            //   .scaleExtent([1,8])
+            //   .on("zoom", zoomed)
 
             let chart = svg.append("g")
               .classed("display", true)
@@ -116,14 +135,16 @@
                     index = idx
                   }
                 })
-                $("#bids").html(bids[index])
-                $("#asks").html(asks[index])
+                console.log(index)
+                if (index === null) {
+                  $("#bids").html("Bids: " + bids[bids.length - 1])
+                  $("#asks").html("Asks: " + asks[asks.length - 1])
+                } else {
+                  $("#bids").html("Bids: " + bids[index])
+                  $("#asks").html("Asks: " + asks[index])
+                }
               })
-              .call(d3.zoom().on("zoom", function() {
-                console.log(chart.attr("transform"))
-                chart.attr("transform", d3.event.transform)
-              }))
-              .append("g")
+              // .call(zoom)
 
             // Add Area to chart
             chart.append("path")
@@ -155,7 +176,8 @@
               }
             })
             .attr("r", function(d) {
-              return d.shares / 33
+              console.log($('#scale-slider').val())
+              return d.shares / 33 * $('#scale-slider').val()
             })
             .attr("cx", function(d, i) {
               return x(d.time)
