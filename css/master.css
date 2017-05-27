@@ -1,7 +1,11 @@
+body {
+  background: #FFF0F5;
+}
+
 .chart {
   background-color: #F5F5DC;
-  width: 1200px;
-  height: 800px;
+  width: 1000px;
+  height: 600px;
   border: 1px solid black;
 }
 
@@ -36,19 +40,66 @@
 }
 
 .display {
-  max-width: 800px;
-  max-height: 1200px;
+  max-width: 600px;
+  max-height: 1000px;
   margin: 0 auto;
   display: flex;
 }
 
-#ask-bid {
-  color: green;
+#button-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  width: 150px;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-style: none;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  color: white;
+  font-weight: 700;
+  background: black;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+#trade-info {
+  margin-left: 5px;
 }
 
 #container {
+  background: white;
+  width: 1300px;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+  vertical-align: center;
+}
+
+#right {
+  width: 200px;
+  border: 1px solid black;
+}
+
+#ask-bid {
+  position: relative;
+  top: 0;
+  top: auto;
+  bottom: 0;
+  bottom: auto;
+  vertical-align: middle;
+  height: 100%;
 }
 
 #count {
@@ -56,8 +107,29 @@
   text-align: center;
   width: 400px;
   margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #count p {
   margin: 0 auto;
+}
+
+.ask-bid-title {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.ask-bid-result {
+  color: green;
+  padding: 5px 10px 5px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-weight: bold;
+  background: rgb(246,248,249); /* Old browsers */
+  background: -moz-linear-gradient(-45deg, rgba(246,248,249,1) 0%, rgba(229,235,238,1) 18%, rgba(215,222,227,1) 31%, rgba(245,247,249,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 18%,rgba(215,222,227,1) 31%,rgba(245,247,249,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 18%,rgba(215,222,227,1) 31%,rgba(245,247,249,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }

@@ -10,27 +10,31 @@
     <title></title>
   </head>
   <body>
+    <div id='container'>
       <div id='ask-bid'>
         <div id='count'>
-          <p id='bids'>Bids: </p>
-          <p id='asks'>Asks: </p>
+          <p id='bids'><span class='ask-bid-title'>Bids:</span> </p>
+          <p id='asks'><span class='ask-bid-title'>Asks:</span> </p>
         </div>
         <div id='chart-container'>
         </div>
       </div>
-      <div id='trade-info'>
-        <p id='time'>Time: </p>
-        <p id='price'>Price: </p>
-        <p id='shares'>Shares: </p>
-        <p id='trade-type'>Trade Type: </p>
-        <p id='reference'>Reference #: </p>
+      <div id='right'>
+        <div id='trade-info'>
+          <p id='time'>Time: </p>
+          <p id='price'>Price: </p>
+          <p id='shares'>Shares: </p>
+          <p id='trade-type'>Trade Type: </p>
+          <p id='reference'>Reference #: </p>
+        </div>
+        <div id='button-container'>
+          <input id='scale-slider' type='range' value='1' min='1' max='2' step='.01'></input>
+          <button id='toggle-trades'>Toggle Trades</button>
+          <button id='toggle-e'>Toggle E</button>
+          <button id='toggle-p'>Toggle P</button>
+        </div>
       </div>
-      <div>
-        <input id='scale-slider' type='range' value='1' min='1' max='2' step='.01'></input>
-        <button id='toggle-trades'>Toggle Trades</button>
-        <button id='toggle-e'>Toggle E</button>
-        <button id='toggle-p'>Toggle P</button>
-      </div>
+    </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // Activate events from jQuery file
@@ -41,8 +45,8 @@
           url: 'https://api.myjson.com/bins/1gjv1x',
           success: (returnData) => {
             let data;
-            let height = 800;
-            let width = 1200;
+            let height = 600;
+            let width = 1000;
             data = returnData
             let tradeScale = 1;
 
@@ -135,13 +139,12 @@
                     index = idx
                   }
                 })
-                console.log(index)
                 if (index === null) {
-                  $("#bids").html("Bids: " + bids[bids.length - 1])
-                  $("#asks").html("Asks: " + asks[asks.length - 1])
+                  $("#bids").html("<span class='ask-bid-title'>Bids:</span>" + `<span class='ask-bid-result'>${bids[bids.length - 1]}</span>`)
+                  $("#asks").html("<span class='ask-bid-title'>Asks:</span>" + `<span class='ask-bid-result'>${asks[asks.length - 1]}</span>`)
                 } else {
-                  $("#bids").html("Bids: " + bids[index])
-                  $("#asks").html("Asks: " + asks[index])
+                  $("#bids").html("<span class='ask-bid-title'>Bids:</span>" + `<span class='ask-bid-result'>${bids[index]}</span>`)
+                  $("#asks").html("<span class='ask-bid-title'>Asks:</span>" + `<span class='ask-bid-result'>${bids[index]}</span>`)
                 }
               })
               // .call(zoom)
@@ -209,7 +212,6 @@
               .classed("y axis", true)
               .attr("transform", `translate(0,0)`)
               .call(yAxis)
-
           }
         })
       })
