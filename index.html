@@ -26,7 +26,15 @@
             bids = data.bboList.map(obj => {
               return obj.bid
             })
-            console.log(bids)
+            times = data.bboList.map(obj => {
+              newString = obj.timeStr.split('').filter(char => {
+                return (char != ":" && char != ".")
+              })
+              return parseInt(newString.join(''))
+            })
+
+            console.log(times)
+
             // firstTime = data.bboList[0].timeStr.split('')
             // console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
             // let hours = parseInt(firstTime.slice(0, 2).join(''))
