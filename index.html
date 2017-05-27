@@ -4,12 +4,28 @@
     <meta charset="utf-8">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="lib/jQueryEvents.js"></script>
     <link rel="stylesheet" href="css/master.css">
     <title></title>
   </head>
   <body>
+    <p id='bids'></p>
+    <p id='asks'></p>
+
+    <div id='trade-info'>
+      <p id='time'>Time: </p>
+      <p id='price'>Price: </p>
+      <p id='shares'>Shares: </p>
+      <p id='trade-type'>Trade Type: </p>
+      <p id='reference'>Reference #: </p>
+    </div>
+    <button id='toggle-trades'>Toggle Trades</button>
+    <button id='toggle-e'>Toggle E</button>
+    <button id='toggle-p'>Toggle P</button>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Activate events from jQuery file
+        Events()
 
         $.ajax({
           type: 'GET',
@@ -19,7 +35,7 @@
             let height = 800;
             let width = 1200;
             data = returnData
-            console.log(data)
+
             asks = data.bboList.map(obj => {
               return obj.ask
             })
@@ -44,10 +60,6 @@
             })
 
             let tickTimes = [9,10,11,12,1,2,3,4,5,6]
-
-
-
-            console.log(times)
 
             let margins = {
               bottom: 20,
@@ -78,12 +90,24 @@
               .append("svg")
               .classed("chart", true)
 
+            let asksArea = d3.area()
+              .curve(d3.curveStepAfter)
+              .x(function(d,i) { return x(times[i])})
+              .y0(0)
+              .y1(function(d,i) {return y(d)})
+
+            let bidsArea = d3.area()
+              .curve(d3.curveStepAfter)
+              .x(function(d,i) { return x(times[i])})
+              .y0(height)
+              .y1(function(d,i) {return y(d)})
+
+
             let chart = svg.append("g")
               .classed("display", true)
+              .data(data.bboList)
               .attr("transform", `translate(${margins.left},${margins.top})`)
               .on("mousemove", function(d) {
-                let coordinates = [0,0]
-                coordinates = d3.mouse(this)
                 let rounded = Math.floor(x.invert(d3.event.pageX)).toString().split('').slice(0,8)
                 rounded = rounded.join('') + "000000";
                 let index = null;
@@ -95,17 +119,11 @@
                 $("#bids").html(bids[index])
                 $("#asks").html(asks[index])
               })
-
-            let asksArea = d3.area()
-              .x(function(d,i) { return x(times[i])})
-              .y0(0)
-              .y1(function(d,i) {return y(d)})
-
-
-            let bidsArea = d3.area()
-              .x(function(d,i) { return x(times[i])})
-              .y0(height)
-              .y1(function(d,i) {return y(d)})
+              .call(d3.zoom().on("zoom", function() {
+                console.log(chart.attr("transform"))
+                chart.attr("transform", d3.event.transform)
+              }))
+              .append("g")
 
             // Add Area to chart
             chart.append("path")
@@ -122,13 +140,36 @@
               .data(data.tradeList)
             .enter()
             .append("circle")
-            .classed("trades", true)
-            .attr("r", 1)
+            .classed("trades", function(d) {
+              if (d.tradeType === "E") {
+                return d3.select(this).classed("E", true)
+              } else if (d.tradeType === "P") {
+                return d3.select(this).classed("P", true)
+              }
+            })
+            .attr("fill", function(d) {
+              if (d.tradeType === "E") {
+                return "red"
+              } else if (d.tradeType === "P") {
+                return "blue"
+              }
+            })
+            .attr("r", function(d) {
+              return d.shares / 33
+            })
             .attr("cx", function(d, i) {
               return x(d.time)
             })
             .attr("cy", function(d,i){
               return y(d.price)
+            })
+            .on("mouseover", function(d) {
+              console.log(d)
+              $("#time").html("Time: " + d.time)
+              $("#price").html("Price: " + d.price)
+              $("#shares").html("Shares: " + d.shares)
+              $("#trade-type").html("Trade Type: " + d.tradeType)
+              $("#reference").html("Reference #: " + d.orderReferenceNumber)
             })
 
             // Create axis
@@ -151,7 +192,5 @@
         })
       })
     </script>
-    <p id='bids'></p>
-    <p id='asks'></p>
   </body>
 </html>

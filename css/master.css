@@ -22,3 +22,21 @@
   fill: green;
   shape-rendering: crispEdges;
 }
+
+.trades {
+  visibility: visible;
+}
+
+.E {
+  visibility: visible;
+}
+
+.P {
+  visibility: visible;
+}
+
+.display {
+  max-width: 800px;
+  max-height: 1200px;
+  margin: 0 auto;
+}
