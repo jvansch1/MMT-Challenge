@@ -17,7 +17,7 @@
           success: (returnData) => {
             let data;
             let height = 800;
-            let width = 800;
+            let width = 1200;
             data = returnData
             console.log(data)
             asks = data.bboList.map(obj => {
@@ -30,21 +30,20 @@
               newString = obj.timeStr.split('').filter(char => {
                 return (char != ":" && char != ".")
               })
-              return parseInt(newString.join(''))
+              parsedString = newString.join('')
+              let hours = parseInt(parsedString.slice(0,2))
+              let hoursInNanoSeconds = hours * 60 * 60 * 1000000000
+              let minutes = parseInt(parsedString.slice(2,4))
+              let minutesInNanoSeconds = minutes * 60 * 1000000000
+              let seconds = parseInt(parsedString.slice(4,6))
+              let secondsInNanoSeconds = seconds * 1000000000
+              let milliseconds = parseInt(parsedString.slice(6))
+              let millisecondsInNanoSeconds = milliseconds * 1000000
+              let total = hoursInNanoSeconds + minutesInNanoSeconds + secondsInNanoSeconds + millisecondsInNanoSeconds
+              return total
             })
 
             console.log(times)
-
-            // firstTime = data.bboList[0].timeStr.split('')
-            // console.log(firstTime < data.bboList[data.bboList.length - 1].timeStr)
-            // let hours = parseInt(firstTime.slice(0, 2).join(''))
-            // let minutes = firstTime.slice(3, 5).join('')
-            // let seconds = firstTime.slice(6, 8).join('')
-            // let milliseconds = firstTime.slice(9).join('')
-            // console.log(hours)
-            // console.log(minutes)
-            // console.log(seconds)
-            // console.log(milliseconds)
 
             let margins = {
               bottom: 20,
@@ -64,12 +63,12 @@
             })
 
             let x = d3.scaleLinear()
-              .domain([0, data.bboList.length])
+              .domain([times[0], times[times.length - 1]])
               .rangeRound([0, width])
 
             let y = d3.scaleLinear()
               .domain([minYRange, 240000])
-              .rangeRound([0, height])
+              .rangeRound([height, 0])
 
             let svg = d3.select("body")
               .append("svg")
@@ -79,15 +78,14 @@
               .classed("display", true)
               .attr("transform", `translate(${margins.left},${margins.top})`)
 
-            let area = d3.area()
-              .x(function(d,i) { return x(i)})
+            let asksArea = d3.area()
+              .x(function(d,i) { return x(times[i])})
               .y0(0)
               .y1(function(d,i) {return y(d)})
 
-            area.curve()
 
-            let askArea = d3.area()
-              .x(function(d,i) { return x(i)})
+            let bidsArea = d3.area()
+              .x(function(d,i) { return x(times[i])})
               .y0(height)
               .y1(function(d,i) {return y(d)})
 
@@ -95,12 +93,25 @@
             chart.append("path")
               // .data(asks)
               .classed("area", true)
-              .attr("d", area(bids))
+              .attr("d", asksArea(asks))
 
             chart.append("path")
               // .data(asks)
               .classed("area2", true)
-              .attr("d", askArea(asks))
+              .attr("d", bidsArea(bids))
+
+            chart.selectAll(".trades")
+              .data(data.tradeList)
+            .enter()
+            .append("circle")
+            .classed("trades", true)
+            .attr("r", 1)
+            .attr("cx", function(d, i) {
+              return x(d.time)
+            })
+            .attr("cy", function(d,i){
+              return y(d.price)
+            })
 
             // Create axis
             let xAxis = d3.axisBottom(x)
