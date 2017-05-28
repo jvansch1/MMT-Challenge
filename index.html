@@ -28,7 +28,9 @@
           <p id='reference'>Reference #: </p>
         </div>
         <div id='button-container'>
+          <p>Trade Size</p>
           <input id='scale-slider' type='range' value='1' min='1' max='2' step='.01'></input>
+          <p>Controls</p>
           <button id='toggle-trades'>Toggle Trades</button>
           <button id='toggle-e'>Toggle E</button>
           <button id='toggle-p'>Toggle P</button>
@@ -49,6 +51,7 @@
             let width = 1000;
             data = returnData
             let tradeScale = 1;
+            let dates = [];
 
             asks = data.bboList.map(obj => {
               return obj.ask
@@ -70,10 +73,14 @@
               let milliseconds = parseInt(parsedString.slice(6))
               let millisecondsInNanoSeconds = milliseconds * 1000000
               let total = hoursInNanoSeconds + minutesInNanoSeconds + secondsInNanoSeconds + millisecondsInNanoSeconds
+              let date = new Date(total / 10000000)
+              dates.push(date)
               return total
             })
-
-            console.log(times)
+            //
+            // console.log(dates)
+            //
+            // console.log(times)
 
             let tickTimes = [9,10,11,12,1,2,3,4,5,6]
 
@@ -101,6 +108,10 @@
             let y = d3.scaleLinear()
               .domain([minYRange, 240000])
               .rangeRound([height, 0])
+
+            let xTimeScale = d3.scaleTime()
+              .domain([dates[0], dates[dates.length - 1]])
+              .range([0,width])
 
             let svg = d3.select("#chart-container")
               .append("svg")
@@ -179,7 +190,6 @@
               }
             })
             .attr("r", function(d) {
-              console.log($('#scale-slider').val())
               return d.shares / 33 * $('#scale-slider').val()
             })
             .attr("cx", function(d, i) {
@@ -202,13 +212,19 @@
 
             // Create axis
             let xAxis = d3.axisBottom(x)
+            let xTimeAxis = d3.axisBottom(xTimeScale)
             let yAxis = d3.axisLeft(y)
 
             // Add X axis
+            // chart.append("g")
+            //   .classed("x axis", true)
+            //   .attr("transform", `translate(0,${height})`)
+            //   .call(xAxis)
+
             chart.append("g")
               .classed("x axis", true)
               .attr("transform", `translate(0,${height})`)
-              .call(xAxis)
+              .call(xTimeAxis)
 
             //Add Y Axis
             chart.append("g")
