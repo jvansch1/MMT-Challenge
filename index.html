@@ -59,10 +59,6 @@
           type: 'GET',
           url: 'https://api.myjson.com/bins/1gjv1x',
           success: (returnData) => {
-
-            console.log(window)
-
-
             let data;
             let height;
             let width;
@@ -76,6 +72,7 @@
             data = returnData
             let tradeScale = 1;
             let dates = [];
+
 
             asks = data.bboList.map(obj => {
               return obj.ask
@@ -102,6 +99,7 @@
               dates.push(date)
               return total
             })
+            // console.log(times)
 
             let margins = {
               bottom: 40,
@@ -122,11 +120,11 @@
 
             let x = d3.scaleLinear()
               .domain([times[0], times[times.length - 1]])
-              .rangeRound([0, width])
+              .range([0, width + margins.left + margins.right])
 
             let y = d3.scaleLinear()
               .domain([minYRange, 240000])
-              .rangeRound([height, 0])
+              .range([height, 0])
 
             let xTimeScale = d3.scaleTime()
               .domain([dates[0], dates[dates.length - 1]])
@@ -165,16 +163,19 @@
                 rounded = rounded.join('') + "000000";
                 let index = null;
                 times.forEach((val,idx) => {
-                  if (val > rounded && index === null) {
+                  // console.log(rounded)
+                  if (val > rounded - 8000000000000 && index === null) {
                     index = idx
                   }
                 })
+                // console.log(x.invert(d3.event.pageX))
+                // console.log(index)
                 if (index === null) {
                   $("#bids").html("<span class='ask-bid-title'>Bids:</span>" + `<span class='ask-bid-result'>${bids[bids.length - 1]}</span>`)
                   $("#asks").html("<span class='ask-bid-title'>Asks:</span>" + `<span class='ask-bid-result'>${asks[asks.length - 1]}</span>`)
                 } else {
                   $("#bids").html("<span class='ask-bid-title'>Bids:</span>" + `<span class='ask-bid-result'>${bids[index]}</span>`)
-                  $("#asks").html("<span class='ask-bid-title'>Asks:</span>" + `<span class='ask-bid-result'>${bids[index]}</span>`)
+                  $("#asks").html("<span class='ask-bid-title'>Asks:</span>" + `<span class='ask-bid-result'>${asks[index]}</span>`)
                 }
               })
               // .call(zoom)
