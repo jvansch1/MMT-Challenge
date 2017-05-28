@@ -119,6 +119,10 @@ button:hover {
   vertical-align: center;
 }
 
+.x-label, .y-label {
+  font-weight: bold;
+}
+
 #right {
   width: 200px;
   /*border: 1px solid black;*/

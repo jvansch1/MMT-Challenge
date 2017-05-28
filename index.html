@@ -104,7 +104,7 @@
             })
 
             let margins = {
-              bottom: 20,
+              bottom: 40,
               top: 20,
               left: 80,
               right: 20
@@ -265,6 +265,23 @@
               .classed("y axis", true)
               .attr("transform", `translate(0,0)`)
               .call(yAxis)
+
+            chart.append("text")
+              .attr("class", "x-label")
+              .attr("text-anchor", "middle")
+              .attr("x", width / 2)
+              .attr("y", height + 32)
+              .text("Time");
+
+            svg.append("text")
+              .attr("class", "y-label")
+              .attr("text-anchor", "end")
+              .attr("y", 6)
+              .attr("x", -200)
+              // .attr("x", height / 2)
+              .attr("dy", ".75em")
+              .attr("transform", "rotate(-90)")
+              .text("Price");
           }
         })
       })
