@@ -6,6 +6,17 @@ header {
   justify-content: space-between;
 }
 
+#transparent {
+  z-index: -100;
+  position: fixed;
+  height: 100vh;
+  background-color: rgba(200,200,0,.5);
+  width: 100%;
+  background-image: url('../img/stocks2.jpg');
+  background-size: contain;
+  background-position: center;
+}
+
 #logo {
   height: 50px;
   margin-left: 10px;
@@ -18,8 +29,6 @@ header {
 
 body {
   background: #FFF0F5;
-  background-image: url('../img/stocks.jpg');
-  background-size: contain;
 }
 
 .chart {
