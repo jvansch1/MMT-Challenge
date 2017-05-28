@@ -65,7 +65,6 @@
               })
               parsedString = newString.join('')
               let hours = parseInt(parsedString.slice(0,2))
-              console.log(hours)
               let hoursInNanoSeconds = hours * 60 * 60 * 1000000000
               let minutes = parseInt(parsedString.slice(2,4))
               let minutesInNanoSeconds = minutes * 60 * 1000000000
@@ -75,14 +74,10 @@
               let millisecondsInNanoSeconds = milliseconds * 1000000
               let total = hoursInNanoSeconds + minutesInNanoSeconds + secondsInNanoSeconds + millisecondsInNanoSeconds
               let date = new Date(total / 1000000)
-              // console.log(date)
               date.setHours(date.getHours() + 5)
               dates.push(date)
               return total
             })
-
-            console.log(dates[0])
-            console.log(dates[dates.length - 1])
 
             let margins = {
               bottom: 20,
