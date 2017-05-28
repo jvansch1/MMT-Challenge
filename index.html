@@ -73,12 +73,14 @@
               let milliseconds = parseInt(parsedString.slice(6))
               let millisecondsInNanoSeconds = milliseconds * 1000000
               let total = hoursInNanoSeconds + minutesInNanoSeconds + secondsInNanoSeconds + millisecondsInNanoSeconds
-              let date = new Date(total / 10000000)
+              let date = new Date(total / 1000000)
               dates.push(date)
               return total
             })
             //
             // console.log(dates)
+            console.log(dates[0])
+            console.log(dates[dates.length - 1])
             //
             // console.log(times)
 
