@@ -2,10 +2,18 @@ header {
   height: 50px;
   width: 100%;
   background: black;
+  display: flex;
+  justify-content: space-between;
 }
 
 #logo {
   height: 50px;
+  margin-left: 10px;
+}
+
+#icon-list {
+  margin-right: 10px;
+  display: flex;
 }
 
 body {
@@ -125,6 +133,7 @@ button:hover {
   bottom: auto;
   vertical-align: middle;
   height: 100%;
+  margin-left: 5px;
 }
 
 #count {

@@ -6,13 +6,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="lib/jQueryEvents.js"></script>
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/master.css">
     <link rel="stylesheet" href="css/laptop.css">
+    <link rel="stylesheet" href="css/fa.css">
     <title></title>
   </head>
   <body>
     <header>
       <img id='logo' src='img/Logomakr_8p5QjD.png' />
+      <ul id='icon-list'>
+        <a href='https://www.linkedin.com/in/john-van-schultz-422623a4/' target="_blank"><li><i class="fa fa-linkedin" aria-hidden="true"></i></li></a>
+        <a href='https://github.com/jvansch1' target="_blank"><li><i class="fa fa-github" aria-hidden="true"></i></li></a>
+        <a href='http://johnvanschultz.site' target="_blank"><li><i class="fa fa-user-circle-o" aria-hidden="true"></i></li></a>
+        <a href='https://s3.amazonaws.com/untappd-dev/nnResume.pdf' target="_blank"><li><i class="fa fa-file-pdf-o" aria-hidden="true"></i></li></a>
+      </ul>
+
     </header>
     <div id='container'>
       <div id='ask-bid'>
@@ -181,6 +190,21 @@
               .classed("area2", true)
               .attr("d", bidsArea(bids))
 
+            function Hours(hour) {
+              if (hour > 12) {
+                return hour - 12
+              }
+
+              return hour
+            }
+
+            function Minutes(minutes) {
+              if (minutes < 10) {
+                return `0${minutes}`
+              }
+              return `${minutes}`
+            }
+
             chart.selectAll(".trades")
               .data(data.tradeList)
             .enter()
@@ -213,7 +237,7 @@
             })
             .on("mouseover", function(d) {
               console.log(d)
-              $("#time").html("<div class='trade-result-container'><span class='ask-bid-title'>Time:</span>" + " " +  "<span class='trade-results'>" + d.time + "</span></div>")
+              $("#time").html("<div class='trade-result-container'><span class='ask-bid-title'>Time:</span>" + " " +  "<span class='trade-results'>" + Hours((new Date(d.time / 1000000).getHours() + 5)) + ":" + Minutes(new Date(d.time / 1000000).getMinutes()) +  "</span></div>")
               $("#price").html("<div class='trade-result-container'><span class='ask-bid-title'>Price:</span>" + " " +  "<span class='trade-results'>" + d.price + "</span></div>")
               $("#shares").html("<div class='trade-result-container'><span class='ask-bid-title'>Shares:</span>" + " " +  "<span class='trade-results'>" + d.shares + "</span></div>")
               $("#trade-type").html("<div class='trade-result-container'><span class='ask-bid-title'>Trade Type:</span>" + " " +  "<span class='trade-results'>" + d.tradeType + "</span></div>")
