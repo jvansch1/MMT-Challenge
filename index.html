@@ -7,6 +7,7 @@
     <script src="lib/jQueryEvents.js"></script>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="css/laptop.css">
     <title></title>
   </head>
   <body>
@@ -21,11 +22,11 @@
       </div>
       <div id='right'>
         <div id='trade-info'>
-          <p id='time'>Time: </p>
-          <p id='price'>Price: </p>
-          <p id='shares'>Shares: </p>
-          <p id='trade-type'>Trade Type: </p>
-          <p id='reference'>Reference #: </p>
+          <div class='trade-result-container'><p id='time'><span class='ask-bid-title'>Time: </span></p></div>
+          <div class='trade-result-container'><p id='price'><span class='ask-bid-title'>Price: </span></p></div>
+          <div class='trade-result-container'><p id='shares'><span class='ask-bid-title'>Shares: </span></p></div>
+          <div class='trade-result-container'><p id='trade-type'><span class='ask-bid-title'>Trade Type: </span></p></div>
+          <div class='trade-result-container'><p id='reference'><span class='ask-bid-title'>Reference #: </span></p></div>
         </div>
         <div id='button-container'>
           <p>Trade Size</p>
@@ -46,9 +47,20 @@
           type: 'GET',
           url: 'https://api.myjson.com/bins/1gjv1x',
           success: (returnData) => {
+
+            console.log(window)
+
+
             let data;
-            let height = 600;
-            let width = 1000;
+            let height;
+            let width;
+            if (window.innerWidth < 1300) {
+              width = 650;
+              height = 450;
+            } else {
+              height = 600;
+              width = 1000;
+            }
             data = returnData
             let tradeScale = 1;
             let dates = [];
@@ -185,7 +197,7 @@
               }
             })
             .attr("r", function(d) {
-              return d.shares / 33 * $('#scale-slider').val()
+              return d.shares / 50 * $('#scale-slider').val()
             })
             .attr("cx", function(d, i) {
               return x(d.time)
@@ -198,11 +210,11 @@
             })
             .on("mouseover", function(d) {
               console.log(d)
-              $("#time").html("Time: " + d.time)
-              $("#price").html("Price: " + d.price)
-              $("#shares").html("Shares: " + d.shares)
-              $("#trade-type").html("Trade Type: " + d.tradeType)
-              $("#reference").html("Reference #: " + d.orderReferenceNumber)
+              $("#time").html("<div class='trade-result-container'><span class='ask-bid-title'>Time:</span>" + " " +  "<span class='trade-results'>" + d.time + "</span></div>")
+              $("#price").html("<div class='trade-result-container'><span class='ask-bid-title'>Price:</span>" + " " +  "<span class='trade-results'>" + d.price + "</span></div>")
+              $("#shares").html("<div class='trade-result-container'><span class='ask-bid-title'>Shares:</span>" + " " +  "<span class='trade-results'>" + d.shares + "</span></div>")
+              $("#trade-type").html("<div class='trade-result-container'><span class='ask-bid-title'>Trade Type:</span>" + " " +  "<span class='trade-results'>" + d.tradeType + "</span></div>")
+              $("#reference").html("<div class='trade-result-container'><span class='ask-bid-title'>Reference #:</span>" + " " +  "<span class='trade-results'>" + d.orderReferenceNumber + "</span></div>")
             })
 
             // Create axis

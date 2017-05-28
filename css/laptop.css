@@ -1,0 +1,14 @@
+@media screen and (max-width: 1300px) {
+  #container {
+    width: 1000px;
+  }
+
+  .chart {
+    width: 700px;
+    height: 450px;
+  }
+
+  #right {
+    width: 250px;
+  }
+}
