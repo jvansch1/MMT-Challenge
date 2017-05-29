@@ -1,6 +1,7 @@
 @media screen and (max-width: 1300px) {
   #container, #shadow {
     width: 1000px;
+    height: 100%;
   }
 
   .chart {
@@ -11,6 +12,4 @@
   #right {
     width: 250px;
   }
-
-
 }

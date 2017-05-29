@@ -14,9 +14,7 @@
     <title></title>
   </head>
   <body>
-    <div id='transparent'>
-
-    </div>
+    <div id='transparent'></div>
     <header>
       <img id='logo' src='img/Logomakr_8p5QjD.png' />
       <ul id='icon-list'>
@@ -26,7 +24,7 @@
         <a href='https://s3.amazonaws.com/untappd-dev/nnResume.pdf' target="_blank"><li><i class="fa fa-file-pdf-o" aria-hidden="true"></i></li></a>
       </ul>
     </header>
-    <div id='shadow'></div>
+    <!-- <div id='shadow'></div> -->
     <div id='container'>
       <div id='ask-bid'>
         <div id='count'>
@@ -58,8 +56,8 @@
       document.addEventListener("DOMContentLoaded", () => {
         // Activate events from jQuery file
         Events();
+        // Ajax call and success callback
         setup();
-
       })
     </script>
   </body>
