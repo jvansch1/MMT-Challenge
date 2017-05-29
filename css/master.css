@@ -4,17 +4,18 @@ header {
   background: black;
   display: flex;
   justify-content: space-between;
+  box-shadow: 5px 5px 30px #888888;
 }
 
 #transparent {
   z-index: -100;
   position: fixed;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(200,200,0,.5);
   width: 100%;
   background-image: url('../img/stocks2.jpg');
   background-size: contain;
-  background-position: center;
+  /*background-position: center;*/
 }
 
 #logo {
@@ -130,7 +131,7 @@ button:hover {
 }
 
 #shadow {
-  z-index: 10000000000;
+  /*z-index: 10000000000;*/
   width: 1300px;
   position: absolute;
   left: 0;
@@ -149,6 +150,8 @@ button:hover {
   width: 200px;
   /*border: 1px solid black;*/
   margin-top: 35px;
+  height: 100vh;
+  z-index: 100000;
 }
 
 #ask-bid {
