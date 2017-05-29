@@ -1,5 +1,5 @@
 @media screen and (max-width: 1300px) {
-  #container {
+  #container, #shadow {
     width: 1000px;
   }
 
@@ -11,4 +11,6 @@
   #right {
     width: 250px;
   }
+
+
 }
