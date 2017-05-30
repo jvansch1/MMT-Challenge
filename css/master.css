@@ -77,6 +77,10 @@ body {
   display: flex;
 }
 
+.innerSpace {
+  width: 200px;
+}
+
 #button-container {
   margin-top: 100px;
   display: flex;
