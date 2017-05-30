@@ -2,7 +2,7 @@
 
 ## Overview
 
-Stocker is an app which uses JavaScript, jQuery, and D3 in order to visualize stock information. Bid amounts are represented by the green area starting from the bottom of the graph and Ask amount are represented by the orange area. Trades of type E are represented as red circle and trades of type P are represented by blue circles. The radius of the circle is represented by the number of shares which exchanged hands in the trade.
+Stocker is an app which uses JavaScript, jQuery, and D3 in order to visualize stock information. Bid amounts are represented by the green area starting from the bottom of the graph and Ask amounts are represented by the orange area. Trades of type E are represented as red circle and trades of type P are represented by blue circles. The radius of the circle is proportional by the number of shares which exchanged hands in the trade.
 
 ![image](img/graph.png)
 
